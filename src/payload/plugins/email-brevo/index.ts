@@ -1,0 +1,1 @@
+export { brevoAdapter } from './adapter'

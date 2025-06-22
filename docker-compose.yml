@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  # This ensures that mailpit setup has been ran and that you've created a local password for accessing mailpit
+  mailpit-check:
+    image: alpine
+    command: >
+      sh -c '
+      if [ ! -e "/app/.mailpit.auth" ]; then
+        echo "\n\n══════════════════════ MAILPIT SETUP REQUIRED ══════════════════════";
+        echo "                                                                      ";
+        echo "   ❌ Mailpit authentication is not configured!                       ";
+        echo "                                                                      ";
+        echo "   Please run:                                                       ";
+        echo "   pnpm setup:mailpit                                                ";
+        echo "                                                                      ";
+        echo "═════════════════════════════════════════════════════════════════════";
+        echo "";
+        sleep 2;
+        echo "\n\n══════════════════════ STARTUP FAILED ═════════════════════════════";
+        echo "Docker Compose startup failed because Mailpit is not configured.     ";
+        echo "Run pnpm setup:mailpit to fix this issue.                           ";
+        echo "═════════════════════════════════════════════════════════════════════\n";
+        exit 1;
+      else
+        echo "✅ Mailpit auth file found, proceeding with startup...";
+        exit 0;
+      fi
+      '
+    volumes:
+      - .:/app:ro
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    ports:
+      - "8025:8025" # mailpit dashboard at http://localhost:8025
+      - "1025:1025"
+    environment:
+      - MP_SMTP_AUTH_ALLOW_INSECURE=true
+      - MP_SMTP_AUTH_ACCEPT_ANY=false
+      - MP_UI_AUTH_FILE=/etc/mailpit/auth
+      - MP_SMTP_AUTH_FILE=/etc/mailpit/auth
+    volumes:
+      - ./.mailpit.auth:/etc/mailpit/auth:ro
+    depends_on:
+      mailpit-check:
+        condition: service_completed_successfully
+
+  # Uncomment the following to use mongodb
+  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
+  # mongo:
+  #   image: mongo:latest
+  #   ports:
+  #     - "27017:27017"
+  #   command:
+  #     - --storageEngine=wiredTiger
+  #   volumes:
+  #     - data:/data/db
+  #   logging:
+  #     driver: none
+
+  # Uncomment the following to use postgres
+  # postgres:
+  #   restart: always
+  #   image: postgres:latest
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+volumes:
+  data:
+  # pgdata:
+  node_modules:

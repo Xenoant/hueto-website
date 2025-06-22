@@ -1,0 +1,46 @@
+@import '~@payloadcms/ui/scss';
+
+@layer payload {
+	.campaign-test {
+		@include blur-bg;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+
+		&__wrapper {
+			z-index: 1;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			padding: 2rem;
+			width: 100%;
+			gap: 1rem;
+			@media screen and (min-width: $breakpoint-xs-width) {
+				max-width: 28rem;
+			}
+		}
+
+		&__input {
+			@include formInput;
+			width: 100%;
+		}
+
+		&__actions {
+			display: flex;
+			gap: 1rem;
+			justify-content: stretch;
+			@media screen and (min-width: $breakpoint-xs-width) {
+				justify-content: flex-end;
+			}
+		}
+
+		&__btn {
+			flex: 1;
+
+			@media screen and (min-width: $breakpoint-xs-width) {
+				flex: initial;
+			}
+		}
+	}
+}

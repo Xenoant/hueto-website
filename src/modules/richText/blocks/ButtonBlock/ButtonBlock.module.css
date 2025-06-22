@@ -1,0 +1,44 @@
+.button {
+	margin-top: var(--mt-mobile, 0);
+	margin-bottom: var(--mb-mobile, 0);
+	justify-content: var(--align-mobile, flex-start); /* Mobile alignment */
+
+	@media (min-width: 48em) {
+		margin-top: var(--mt-tablet, var(--mt-mobile, 0));
+		margin-bottom: var(--mb-tablet, var(--mb-mobile, 0));
+		justify-content: var(--align-tablet, var(--align-mobile, flex-start)); /* Tablet alignment */
+	}
+
+	@media (min-width: 74em) {
+		margin-top: var(--mt-desktop, var(--mt-tablet, var(--mt-mobile, 0)));
+		margin-bottom: var(--mb-desktop, var(--mb-tablet, var(--mb-mobile, 0)));
+		justify-content: var(--align-desktop, var(--align-tablet, var(--align-mobile, flex-start))); /* Desktop alignment */
+	}
+}
+
+.buttonItem {
+	width: auto; /* Default button width */
+	min-width: fit-content; /* Prevent shrinking below natural size */
+	max-width: 100%; /* Prevent overflow */
+
+	/* Mobile fullWidth */
+	@media (min-width: 0) {
+		flex-grow: var(--fullWidth-mobile, 0); /* Use mobile value */
+		width: calc(var(--fullWidth-mobile, 0) * 100%);
+	}
+
+	/* Tablet fullWidth cascades from mobile */
+	@media (min-width: 48em) {
+		flex-grow: var(--fullWidth-tablet, var(--fullWidth-mobile, 0)); /* Fallback to mobile */
+		width: calc(var(--fullWidth-tablet, var(--fullWidth-mobile, 0)) * 100%);
+	}
+
+	/* Desktop fullWidth cascades from tablet or mobile */
+	@media (min-width: 74em) {
+		flex-grow: var(
+			--fullWidth-desktop,
+			var(--fullWidth-tablet, var(--fullWidth-mobile, 0))
+		); /* Fallback to tablet/mobile */
+		width: calc(var(--fullWidth-desktop, var(--fullWidth-tablet, var(--fullWidth-mobile, 0))) * 100%);
+	}
+}
