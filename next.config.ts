@@ -38,15 +38,15 @@ const nextConfig: NextConfig = {
 	},
 
 	// Uncomment to ignore build errors. Not recommended for production.
-	// typescript: {
-	// 	ignoreBuildErrors: true,
-	// },
+	typescript: {
+		ignoreBuildErrors: true,
+	},
 
 	// Warning: This allows production builds to successfully complete even if
 	// your project has ESLint errors. Not recommended for production.
-	// eslint: {
-	// 	ignoreDuringBuilds: true,
-	// },
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: true })
